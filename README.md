@@ -22,6 +22,17 @@ trong đó:
 
 Cách 2: Gộp các lệnh  ở cách 1 bằng việc dùng '-i'  
 ```bash
-gcc main.c lib.c -o main.exe -I
+gcc main.c lib.c -o main.exe -I.
  ./mainexe  
+```
+
+# Make file đầu tiên
+Tạo 1 file "Makefile"  
+```bash
+main:
+	gcc main.c lib.c -o main.exe -I.
+```
+Cách chạy   
+```bash
+make main
 ```

@@ -157,4 +157,77 @@ Giải thích:
 
 * Tương tự cho SRC_SRCS.
 
-* Cuối cùng gom lại thành biến OBJS để biên dịch và link.
+* Cuối cùng gom lại thành biến OBJS để biên dịch và link.   
+
+
+# Automatic Variable
+
+```bash
+Tham khảo chính thức: [GNU Make Manual – Automatic Variables](https://www.gnu.org/software/make/manual/html_node/Automatic-Variables.html)
+
+## Biến chính
+
+| Biến |  Ý nghĩa |  Ví dụ |
+|:--:|:--|:--|
+| `$@` | Tên **target** hiện tại đang được thực thi. | `gcc -o $@ $^` → `gcc -o main main.o utils.o` |
+| `$%` | Khi target là **archive member** (vd: `lib.a(member.o)`), đây là tên thành viên (`member.o`). | `ar rcs $@ $%` |
+| `$<` | Tên **prerequisite đầu tiên** của rule. | `gcc -c $< -o $@` |
+| `$?` | Tất cả prerequisites **mới hơn** target (phân cách bởi khoảng trắng). | Dùng để **chỉ biên dịch lại file thay đổi** |
+| `$^` | Tất cả prerequisites (không lặp lại, không gồm order-only). | `gcc -o $@ $^` |
+| `$+` | Giống `$^` nhưng **giữ nguyên thứ tự và lặp lại nếu có**. | Dùng khi **link thư viện** cần thứ tự chính xác |
+| `$|` | Danh sách **order-only prerequisites**. | Ít dùng, chủ yếu trong build dependency phức tạp |
+| `$*` | “**Stem**” – phần khớp với `%` trong pattern rule. | Với rule `%.o : %.c`, nếu target là `main.o`, thì `$* = main` |
+
+
+##  Biến mở rộng (phần thư mục / phần tên tệp)
+
+|  Biến |  Ý nghĩa |  Ví dụ |
+|:--:|:--|:--|
+| `$(@D)` | Thư mục chứa target (`.` nếu không có). | `$@ = build/main.o` → `$(@D) = build` |
+| `$(@F)` | Tên file của target (không có đường dẫn). | `$@ = build/main.o` → `$(@F) = main.o` |
+| `$(*D)` | Thư mục chứa phần stem. | `$* = src/foo` → `$(*D) = src` |
+| `$(*F)` | Tên file của phần stem. | `$* = src/foo` → `$(*F) = foo` |
+| `$(%D)` | Thư mục của **archive member**. | `lib/archive(member.o)` → `$(%D) = archive` |
+| `$(%F)` | Tên file của **archive member**. | `lib/archive(member.o)` → `$(%F) = member.o` |
+| `$(<D)` | Thư mục chứa **prerequisite đầu tiên**. | `$< = src/main.c` → `$(<D) = src` |
+| `$(<F)` | Tên file của **prerequisite đầu tiên**. | `$< = src/main.c` → `$(<F) = main.c` |
+| `$(^D)` | Danh sách thư mục của tất cả prerequisites (`$^`). | |
+| `$(^F)` | Danh sách tên file của tất cả prerequisites (`$^`). | |
+| `$(+D)` | Giống `$(^D)` nhưng giữ nguyên thứ tự/lặp lại. | |
+| `$(+F)` | Giống `$(^F)` nhưng giữ nguyên thứ tự/lặp lại. | |
+| `$(?D)` | Danh sách thư mục của prerequisites **mới hơn target** (`$?`). | |
+| `$(?F)` | Danh sách tên file của prerequisites **mới hơn target** (`$?`). | |
+
+
+## Ghi nhớ nhanh
+
+| Ký hiệu | Nghĩa 							|
+|:--:|:--									|
+| `@` | Target 								|
+| `%` | Thành viên archive 					|
+| `<` | Prerequisite đầu tiên 				|
+| `?` | Prerequisites mới hơn target 		|
+| `^` | Tất cả prerequisites (không lặp) 	|
+| `+` | Tất cả prerequisites (giữ lặp) 		|
+| `|` | Order-only prerequisites 			|
+| `*` | Stem (pattern match) 				|
+
+
+
+``` 
+
+## 🔍 Ví dụ nhỏ
+```bash
+# Biên dịch từng file .c thành .o
+%.o : %.c
+	@gcc -c $< -o $@
+	@echo "Compiled $< → $@"
+
+# Liên kết các file object thành chương trình chính
+main : main.o utils.o
+	@gcc -o $@ $^
+	@echo "Linked: $^ → $@"
+
+``` 
+
+

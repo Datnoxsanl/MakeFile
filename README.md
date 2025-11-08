@@ -26,7 +26,7 @@ gcc main.c lib.c -o main.exe -I.
  ./mainexe  
 ```
 
-# Make file đầu tiên
+# Makefile đầu tiên
 Tạo 1 file "Makefile"  
 ```bash
 main:
@@ -36,3 +36,6 @@ Cách chạy
 ```bash
 make main
 ```
+
+# Rule MakeFile
+![alt text](image.png)

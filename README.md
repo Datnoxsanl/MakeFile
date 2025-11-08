@@ -108,5 +108,6 @@ Một số chuẩn PHONY hay dùng
 | TAGS      | Tạo bảng tag để editor dùng                                   |
 | info      | Tạo GNU info file từ textinfo source                          |
 | check     | Chạy bất kỳ test nào tương ứng với chương trình               |
-
+| build     | Biên dịch hoặc xây dựng project               				|
+| run	    | Chạy chương trình								             	|
 ```  

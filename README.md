@@ -38,4 +38,14 @@ make main
 ```
 
 # Rule MakeFile
-![alt text](image.png)
+![alt text](image.png)\
+
+# Biến trong makeFile
+Được khởi tạo:   
+```bash
+NAME = VALUE
+```
+Được call:  
+```bash
+${NAME} hoặc $(NAME) 
+```

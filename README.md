@@ -64,9 +64,7 @@ $@: tên của target hiện tại (file đích)
 $<:  tên của file phụ thuộc đầu tiên (first prerequisite)  
 $^ — tất cả các file phụ thuộc (all prerequisites), không trùng lặp  
 ```
-
 Ví dụ minh họa:  
-
 ```bash
 main.o: main.c
 	gcc -c main.c -o main.o
@@ -120,4 +118,43 @@ Giải pháp là:
 CFLAGS= I inc
 VPATH = src
 ``` 
+
 Viết vào trong Makefile
+
+# FOREACH trong makefile 
+ Nếu có nhiều folder chứa file .h nhiều folder chứa file .c thì làm như nào.  ![alt text](image-2.png)  
+ Đây là lúc chúng ta dùng FOREACH: 
+```bash
+$(foreach var, list, text)
+``` 
+trong đó:  
+* var là biến tạm lưu phần tử trong list trong mỗi vòng lặp
+* list: danh sách các phần tử mà bạn muốn lặp qua
+* text: Phần tử hoặc biểu thức cần thực hiện với mỗi phần tử trong list  
+```bash
+CC      := gcc
+
+INC_DIR := ./inc ./core
+SRC_DIR := ./src ./core
+
+CFLAGS  := $(foreach d, $(INC_DIR), -I$(d))
+
+VPATH   := $(foreach d, $(SRC_DIR), $(d))
+
+%.o : %.c
+	$(CC) -c $(CFLAGS) $< -o $@
+
+all: main.o lib.o core.o
+	$(CC) main.o lib.o core.o -o main.exe
+.PHONY: clean all
+clean:
+	rm -f *.o *.exe
+
+``` 
+
+Giải thích:  
+* foreach src, $(CORE_SRCS), $(src:.c=.o) nghĩa là duyệt qua từng file trong CORE_SRCS, chuyển phần mở rộng .c thành .o.
+
+* Tương tự cho SRC_SRCS.
+
+* Cuối cùng gom lại thành biến OBJS để biên dịch và link.

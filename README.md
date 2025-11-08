@@ -50,7 +50,7 @@ NAME = VALUE
 ${NAME} hoặc $(NAME) 
 ```
 # Một vài ký tự trong MAKEFILE cần nhớ wildcarrds, automatic variable  
-%.o  %.c  pattern đại diện cho file có phần tên bất kỳ, phần mở rộng .c hoặc .o.  
+ ## %.o  %.c  pattern đại diện cho file có phần tên bất kỳ, phần mở rộng .c hoặc .o.  
 Ví dụ:
 ```bash
 %.o: %.c
@@ -58,10 +58,12 @@ Ví dụ:
 ```
 Nghĩa là: “Muốn tạo file .o từ file .c có cùng tên phần đầu, chạy lệnh bên dưới”.
 
-Automatic variables  
+## Automatic variables  
+```bash
 $@: tên của target hiện tại (file đích)  
 $<:  tên của file phụ thuộc đầu tiên (first prerequisite)  
 $^ — tất cả các file phụ thuộc (all prerequisites), không trùng lặp  
+```
 
 Ví dụ minh họa:  
 
@@ -75,5 +77,36 @@ Có thể viết ngắn gọn với pattern và automatic variables:
 	gcc -c $< -o $@
 ```
 Ở đây:  
-Nếu target là main.o, thì $@ = main.o  
-File nguồn đầu tiên $< = main.c  
+* Nếu target là main.o, thì $@ = main.o  
+* File nguồn đầu tiên $< = main.c  
+
+
+# PHONY
+Khi target trung tên file, vd có lệnh:  
+```bash
+clean:
+	rm -f *.exe *.o
+```
+Và có file 'clean' thì sẽ cho kết quả: 
+```bash
+make : 'clean' is up to date.
+```
+ta sẽ sửa makeflie thành:   
+```bash
+.PHONY: clean
+clean:
+	rm -f *.exe *.o
+```  
+Một số chuẩn PHONY hay dùng 
+```bash
+| Target    | Chức năng                                                      |
+|-----------|----------------------------------------------------------------|
+| all       | Thực hiện build toàn bộ                                        |
+| install   | Tạo bản cài đặt của ứng dụng từ việc compile binary            |
+| clean     | Xóa binary file được tạo từ source                             |
+| distclean | Xóa tất cả các file được tạo ra mà không nằm trong source chính |
+| TAGS      | Tạo bảng tag để editor dùng                                   |
+| info      | Tạo GNU info file từ textinfo source                          |
+| check     | Chạy bất kỳ test nào tương ứng với chương trình               |
+
+```  

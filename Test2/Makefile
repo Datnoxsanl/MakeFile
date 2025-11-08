@@ -29,5 +29,6 @@ $(TARGET): $(OBJS)
 %.o: %.c
 	$(CC) $(CFLAGS) $< -o $@
 
+.PHONY: clean
 clean:
 	rm -f $(OBJS) $(TARGET)

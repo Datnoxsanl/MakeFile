@@ -111,3 +111,13 @@ Một số chuẩn PHONY hay dùng
 | build     | Biên dịch hoặc xây dựng project               				|
 | run	    | Chạy chương trình								             	|
 ```  
+
+# VPATH và CFLAGS trong Makefile
+từ trước tới giờ các file .c .h đang để trong cùng 1 thư mục nên thao tác rát đơn giản.  
+Khi để các file .c trong 1 folder và các file .h trong 1 folder![alt text](image-1.png)  
+Giải pháp là:  
+```bash
+CFLAGS= I inc
+VPATH = src
+``` 
+Viết vào trong Makefile

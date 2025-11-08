@@ -49,3 +49,31 @@ NAME = VALUE
 ```bash
 ${NAME} hoặc $(NAME) 
 ```
+# Một vài ký tự trong MAKEFILE cần nhớ wildcarrds, automatic variable  
+%.o  %.c  pattern đại diện cho file có phần tên bất kỳ, phần mở rộng .c hoặc .o.  
+Ví dụ:
+```bash
+%.o: %.c
+	gcc -c $< -o $@
+```
+Nghĩa là: “Muốn tạo file .o từ file .c có cùng tên phần đầu, chạy lệnh bên dưới”.
+
+Automatic variables  
+$@: tên của target hiện tại (file đích)  
+$<:  tên của file phụ thuộc đầu tiên (first prerequisite)  
+$^ — tất cả các file phụ thuộc (all prerequisites), không trùng lặp  
+
+Ví dụ minh họa:  
+
+```bash
+main.o: main.c
+	gcc -c main.c -o main.o
+```
+Có thể viết ngắn gọn với pattern và automatic variables:  
+```bash
+%.o: %.c
+	gcc -c $< -o $@
+```
+Ở đây:  
+Nếu target là main.o, thì $@ = main.o  
+File nguồn đầu tiên $< = main.c  

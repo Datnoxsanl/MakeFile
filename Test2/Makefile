@@ -4,6 +4,7 @@
 # 	gcc main.c lib.c -o main.exe
 
 # Rules make file
+
 # main.o: main.c 
 # 	gcc -c main.c -o main.o
 # lib.o: lib.c
